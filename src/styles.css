@@ -1,3 +1,22 @@
-.hello {
-  color: red;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(to right, #fdf497, pink);;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.container {
+  width: 50vw;
+  height: 50vh;
+  border: 1px solid black;
+  background-color: white;
 }
