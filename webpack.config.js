@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 const path = require('path');
 const json5 = require('json5');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -25,10 +26,10 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             presets: [
-              ['@babel/preset-env', { targets: "defaults" }]
-            ]
-          }
-        }
+              ['@babel/preset-env', { targets: 'defaults' }],
+            ],
+          },
+        },
       },
       {
         test: /\.css$/i,
