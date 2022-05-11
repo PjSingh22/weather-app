@@ -11,13 +11,16 @@ async function getWeatherData(city = 'New York') {
   return data;
 }
 
+function renderWeather(data) {
+  const temp = Math.round(data.main.temp * (9 / 5) - 459.67);
+  currentWeatherName.innerHTML = data.name;
+  currentWeatherTemp.innerHTML = `${temp}°F`;
+}
+
 // add eventlistener to window
 window.addEventListener('load', () => {
   getWeatherData('Fremont').then((data) => {
-    currentWeatherName.innerHTML = data.name;
-    // convert temp to farenheit
-    const temp = Math.round(data.main.temp * (9 / 5) - 459.67);
-    currentWeatherTemp.innerHTML = temp + '&deg;' + 'F';
+    renderWeather(data);
   });
 });
 
