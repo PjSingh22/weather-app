@@ -1,7 +1,8 @@
 /* eslint-disable linebreak-style */
 const path = require('path');
 const json5 = require('json5');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+// const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -11,7 +12,9 @@ module.exports = {
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
-    clean: true,
+  },
+  experiments: {
+    topLevelAwait: true,
   },
   devtool: 'inline-source-map',
   devServer: {
@@ -53,8 +56,8 @@ module.exports = {
     ],
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      title: 'Development',
+    new MiniCssExtractPlugin({
+      filename: 'bundle.css',
     }),
   ],
   optimization: {

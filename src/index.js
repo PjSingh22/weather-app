@@ -1,38 +1,23 @@
 /* eslint-disable linebreak-style */
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css';
+const currentWeatherName = document.querySelector('.current-title');
+const currentWeatherIcon = document.querySelector('.current-icon');
+const currentWeatherTemp = document.querySelector('.current-temp');
 
-function weatherLayout() {
-  const container = document.createElement('div');
-  container.classList.add('container');
-  container.innerHTML = `
-    <div class="search-city-container">
-      <label class="search-city-label">Search for a city:
-        <input type="text" class="search-city" placeholder="Search for a city...">
-      </label>
-      <button class="search-city-button btn btn-primary">Search</button>
-    </div>
-    <div class="weather-container">
-      <div class="current-weather">
-        <h1 class="current-title">Fremont,CA</h1>
-        <div class="current-icon-container">
-          <img class="current-icon" src="#" alt="weather icon">
-        </div>
-        <div class="current-temp-container">
-          <h2 class="current-temp">22F</h2>
-        </div>
-      </div>
-    </div>
-    `;
-  return container;
+async function getWeatherData(city = 'New York') {
+  const API = 'bf1b862b454a53f068a32a77640da62e';
+  const respone = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${API}`);
+  const data = await respone.json();
+  return data;
 }
 
-function app() {
-  return (
-    weatherLayout()
-  );
-}
+// add eventlistener to window
+window.addEventListener('load', () => {
+  getWeatherData('Fremont').then((data) => {
+    currentWeatherName.innerHTML = data.name;
+    // convert temp to farenheit
+    const temp = Math.round(data.main.temp * (9 / 5) - 459.67);
+    currentWeatherTemp.innerHTML = temp + '&deg;' + 'F';
+  });
+});
 
-document.body.appendChild(app());
-
-// const searchBtn = document.querySelector('.search-city-button');
