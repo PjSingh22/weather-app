@@ -1,9 +1,32 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Development</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1"><script defer src="runtime.js"></script><script defer src="index.js"></script></head>
-  <body>
-  </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../src/styles.css">
+  <title>Document</title>
+</head>
+<body>
+  <div class="container">
+    <div class="search-city-container">
+      <label class="search-city-label">Search for a city:
+        <input type="text" class="search-city" placeholder="Search for a city...">
+      </label>
+      <button class="search-city-button btn btn-primary">Search</button>
+    </div>
+    <div class="weather-container">
+      <div class="current-weather">
+        <p class="current-title">Fremont, Ca</p>
+        <div class="current-icon-container">
+          <img class="current-icon" src="#" alt="weather icon">
+        </div>
+        <div class="current-temp-container">
+          <h2 class="current-temp">22F</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script defer src="runtime.js"></script><script defer src="index.js"></script>
+</body>
 </html>
