@@ -31,6 +31,11 @@ body {
 }
 
 .weather-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 10px;
   width: 50vw;
   height: 50vh;
   padding: 10px;
@@ -52,10 +57,6 @@ body {
   font-weight: bold;
 }
 
-.current-temp-container {
-  margin-bottom: 10px;
-}
-
 /* other info styles */
 
 .other-info-container {
@@ -67,3 +68,21 @@ body {
 .other-info-item {
   padding: 5px;
 }
+
+/* 10 day forcast styles */
+
+.ten-day-container {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  width: 100%;
+  overflow-x: scroll;
+}
+
+.ten-day-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  }

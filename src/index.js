@@ -8,27 +8,66 @@ const windValue = document.querySelector('.wind-value');
 const humidityValue = document.querySelector('.humidity-value');
 const pressureValue = document.querySelector('.pressure-value');
 const feelsLikeValue = document.querySelector('.feels-like-value');
+const tenDayContainer = document.querySelector('.ten-day-container');
+
+function getDay(timestamp) {
+  const date = new Date(timestamp * 1000);
+  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  return days[date.getDay()];
+}
 
 async function getWeatherData(city = 'New York') {
   const API = 'bf1b862b454a53f068a32a77640da62e';
-  const respone = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${API}`);
-  const data = await respone.json();
-  console.log(data);
-  return data;
+  const currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${API}`;
+  const currentWeatherResponse = await fetch(currentWeatherUrl);
+  const currentWeatherJson = await currentWeatherResponse.json();
+  const currentWeatherLon = currentWeatherJson.coord.lon;
+  const currentWeatherLat = currentWeatherJson.coord.lat;
+  const futureWeatherUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${currentWeatherLat}&lon=${currentWeatherLon}&appid=${API}&units=imperial`;
+  const futureWeatherResponse = await fetch(futureWeatherUrl);
+  const futureWeatherJson = await futureWeatherResponse.json();
+  // console.log(futureWeatherJson);
+  return {
+    currentWeatherJson,
+    futureWeatherJson,
+  };
 }
 
 function convertToFahrenheit(temp) {
   return Math.round((temp * 9) / 5 - 459.67);
 }
 
+function tenDayForcast(futureWeatherData) {
+  const data = futureWeatherData.daily;
+  for (let i = 0; i < data.length; i += 1) {
+    const day = getDay(data[i].dt);
+    const temp = Math.round(data[i].temp.day);
+    const description = data[i].weather[0].description
+    tenDayContainer.innerHTML += `
+    <div class="ten-day-item">
+      <p class="ten-day-title">${day}</p>
+      <div class="ten-day-icon-container">
+        <p class="ten-day-icon" alt="weather icon">${description}</p>
+      </div>
+      <p class="ten-day-temp">${temp}°F</p>
+    </div>
+    `;
+  }
+  return tenDayContainer;
+}
+
 function renderWeather(data) {
-  currentWeatherName.innerHTML = data.name;
-  currentWeatherSetting.innerHTML = data.weather[0].description;
-  currentWeatherTemp.innerHTML = `${convertToFahrenheit(data.main.temp)}°F`;
-  windValue.innerHTML = `${Math.round(data.wind.speed)} mph`;
-  humidityValue.innerHTML = `${data.main.humidity}%`;
-  pressureValue.innerHTML = `${Math.round(data.main.pressure)} mb`;
-  feelsLikeValue.innerHTML = `${convertToFahrenheit(data.main.feels_like)}°F`;
+  const currentWeather = data.currentWeatherJson;
+  const futureWeather = data.futureWeatherJson;
+  console.log(futureWeather);
+  currentWeatherName.innerHTML = currentWeather.name;
+  currentWeatherSetting.innerHTML = currentWeather.weather[0].description;
+  currentWeatherTemp.innerHTML = `${Math.round(currentWeather.main.temp)}°F`;
+  windValue.innerHTML = `${Math.round(currentWeather.wind.speed)} mph`;
+  humidityValue.innerHTML = `${currentWeather.main.humidity}%`;
+  pressureValue.innerHTML = `${Math.round(currentWeather.main.pressure)} mb`;
+  feelsLikeValue.innerHTML = `${Math.round(currentWeather.main.feels_like)}°F`;
+  tenDayForcast(futureWeather);
 }
 
 window.addEventListener('load', () => {
