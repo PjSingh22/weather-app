@@ -31,15 +31,39 @@ body {
 }
 
 .weather-container {
-  width: 60vw;
-  height: 60vh;
-  border: 1px solid black;
-  background-color: white;
+  width: 50vw;
+  height: 50vh;
+  padding: 10px;
+  /* border: 1px solid black; */
+  background-color: black;
+  color: white;
   align-items: center;
   border-radius: 5px;
 }
 
-.search-bar-container {
-  width: 100%;
-  background-color: green;
+/* current weather styles */
+.current-title {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.current-setting {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.current-temp-container {
+  margin-bottom: 10px;
+}
+
+/* other info styles */
+
+.other-info-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 0 auto;
+}
+
+.other-info-item {
+  padding: 5px;
 }
