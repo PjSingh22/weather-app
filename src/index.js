@@ -9,6 +9,9 @@ const humidityValue = document.querySelector('.humidity-value');
 const pressureValue = document.querySelector('.pressure-value');
 const feelsLikeValue = document.querySelector('.feels-like-value');
 const tenDayContainer = document.querySelector('.ten-day-container');
+const searchBtn = document.querySelector('.search-city-button');
+const searchValue = document.querySelector('.search-city');
+const errorcontainer = document.querySelector('.errors');
 
 function getDay(timestamp) {
   const date = new Date(timestamp * 1000);
@@ -26,7 +29,6 @@ async function getWeatherData(city = 'New York') {
   const futureWeatherUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${currentWeatherLat}&lon=${currentWeatherLon}&appid=${API}&units=imperial`;
   const futureWeatherResponse = await fetch(futureWeatherUrl);
   const futureWeatherJson = await futureWeatherResponse.json();
-  // console.log(futureWeatherJson);
   return {
     currentWeatherJson,
     futureWeatherJson,
@@ -37,12 +39,17 @@ function convertToFahrenheit(temp) {
   return Math.round((temp * 9) / 5 - 459.67);
 }
 
+function clearForcast() {
+  tenDayContainer.innerHTML = '';
+}
+
 function tenDayForcast(futureWeatherData) {
+  clearForcast();
   const data = futureWeatherData.daily;
   for (let i = 0; i < data.length; i += 1) {
     const day = getDay(data[i].dt);
     const temp = Math.round(data[i].temp.day);
-    const description = data[i].weather[0].description
+    const { description } = data[i].weather[0];
     tenDayContainer.innerHTML += `
     <div class="ten-day-item">
       <p class="ten-day-title">${day}</p>
@@ -59,7 +66,6 @@ function tenDayForcast(futureWeatherData) {
 function renderWeather(data) {
   const currentWeather = data.currentWeatherJson;
   const futureWeather = data.futureWeatherJson;
-  console.log(futureWeather);
   currentWeatherName.innerHTML = currentWeather.name;
   currentWeatherSetting.innerHTML = currentWeather.weather[0].description;
   currentWeatherTemp.innerHTML = `${Math.round(currentWeather.main.temp)}°F`;
@@ -72,6 +78,19 @@ function renderWeather(data) {
 
 window.addEventListener('load', () => {
   getWeatherData('Fremont').then((data) => {
+    renderWeather(data);
+  });
+});
+
+searchBtn.addEventListener('click', () => {
+  const city = searchValue.value;
+  if (city === '' || city <= 0) {
+    errorcontainer.classList.remove('hidden');
+    errorcontainer.innerHTML = 'Please enter a valid city';
+    return;
+  }
+  errorcontainer.classList.add('hidden');
+  getWeatherData(city).then((data) => {
     renderWeather(data);
   });
 });
