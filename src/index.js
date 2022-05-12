@@ -35,9 +35,9 @@ async function getWeatherData(city = 'New York') {
   };
 }
 
-function convertToFahrenheit(temp) {
-  return Math.round((temp * 9) / 5 - 459.67);
-}
+// function convertToFahrenheit(temp) {
+//   return Math.round((temp * 9) / 5 - 459.67);
+// }
 
 function clearForcast() {
   tenDayContainer.innerHTML = '';
@@ -77,7 +77,7 @@ function renderWeather(data) {
 }
 
 window.addEventListener('load', () => {
-  getWeatherData('Fremont').then((data) => {
+  getWeatherData('New York').then((data) => {
     renderWeather(data);
   });
 });
