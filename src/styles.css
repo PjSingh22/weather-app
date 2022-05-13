@@ -34,9 +34,9 @@ body {
   align-items: center;
 }
 
-.search-city-container, label {
+.search-city-container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 10px;
@@ -127,6 +127,10 @@ body {
   @media (min-width: 768px) {
     .other-info-container {
       font-size: 1.4em;
+    }
+
+    .search-city-container {
+      flex-direction: row;
     }
   }
 
