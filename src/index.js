@@ -1,12 +1,14 @@
 /* eslint-disable linebreak-style */
 import './styles.css';
-import Sunny from './sunny.png'
 import Cloudy from './weather-icons/animated/cloudy.svg';
+import Rainy from './weather-icons/animated/rainy-5.svg';
+import Sunny from './weather-icons/animated/day.svg';
+import Night from './weather-icons/animated/night.svg';
+import Snowy from './weather-icons/animated/snowy-6.svg';
+import Thunder from './weather-icons/animated/thunder.svg';
 
 const currentWeatherName = document.querySelector('.current-title');
-const currentWeatherSetting = document.querySelector('.current-setting');
-const currentIconContainer = document.querySelector('.current-icon-container')
-const currentWeatherIcon = document.querySelector('.current-icon');
+const currentIconContainer = document.querySelector('.current-icon-container');
 const currentWeatherTemp = document.querySelector('.current-temp');
 const windValue = document.querySelector('.wind-value');
 const humidityValue = document.querySelector('.humidity-value');
@@ -67,15 +69,38 @@ function tenDayForcast(futureWeatherData) {
   return tenDayContainer;
 }
 
+function setWeatherIcon(currentWeather) {
+  const img = document.createElement('img');
+  img.classList = 'img-icon';
+
+  switch (currentWeather) {
+    case 'Clouds':
+      img.src = Cloudy;
+      break;
+    case 'Rain':
+      img.src = Rainy;
+      break;
+    case 'Clear':
+      img.src = Sunny;
+      break;
+    case 'Snow':
+      img.src = Snowy;
+      break;
+    case 'Thunderstorm':
+      img.src = Thunder;
+      break;
+    default:
+      return null;
+  }
+  return img;
+}
+
 function renderWeather(data) {
   const currentWeather = data.currentWeatherJson;
   const futureWeather = data.futureWeatherJson;
-  let img = document.createElement('img');
-  img.classList = 'img-icon';
   currentWeatherName.innerHTML = currentWeather.name;
-  // currentWeatherSetting.innerHTML = currentWeather.weather[0].description;
-  img.src = Cloudy;
-  currentIconContainer.appendChild(img);
+  currentIconContainer.innerHTML = '';
+  currentIconContainer.appendChild(setWeatherIcon(currentWeather.weather[0].main));
   currentWeatherTemp.innerHTML = `${Math.round(currentWeather.main.temp)}°F`;
   windValue.innerHTML = `${Math.round(currentWeather.wind.speed)} mph`;
   humidityValue.innerHTML = `${currentWeather.main.humidity}%`;
