@@ -1,8 +1,12 @@
 /* eslint-disable linebreak-style */
 import './styles.css';
+import Sunny from './sunny.png'
+import Cloudy from './weather-icons/animated/cloudy.svg';
 
 const currentWeatherName = document.querySelector('.current-title');
 const currentWeatherSetting = document.querySelector('.current-setting');
+const currentIconContainer = document.querySelector('.current-icon-container')
+const currentWeatherIcon = document.querySelector('.current-icon');
 const currentWeatherTemp = document.querySelector('.current-temp');
 const windValue = document.querySelector('.wind-value');
 const humidityValue = document.querySelector('.humidity-value');
@@ -66,8 +70,12 @@ function tenDayForcast(futureWeatherData) {
 function renderWeather(data) {
   const currentWeather = data.currentWeatherJson;
   const futureWeather = data.futureWeatherJson;
+  let img = document.createElement('img');
+  img.classList = 'img-icon';
   currentWeatherName.innerHTML = currentWeather.name;
-  currentWeatherSetting.innerHTML = currentWeather.weather[0].description;
+  // currentWeatherSetting.innerHTML = currentWeather.weather[0].description;
+  img.src = Cloudy;
+  currentIconContainer.appendChild(img);
   currentWeatherTemp.innerHTML = `${Math.round(currentWeather.main.temp)}°F`;
   windValue.innerHTML = `${Math.round(currentWeather.wind.speed)} mph`;
   humidityValue.innerHTML = `${currentWeather.main.humidity}%`;
