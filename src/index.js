@@ -3,9 +3,11 @@ import './styles.css';
 import Cloudy from './weather-icons/animated/cloudy.svg';
 import Rainy from './weather-icons/animated/rainy-5.svg';
 import Sunny from './weather-icons/animated/day.svg';
-import Night from './weather-icons/animated/night.svg';
+// import Night from './weather-icons/animated/night.svg';
 import Snowy from './weather-icons/animated/snowy-6.svg';
 import Thunder from './weather-icons/animated/thunder.svg';
+import dayTimeBackground from './daytime.jpg';
+import nightTimeBackground from './nighttime.jpg';
 
 const currentWeatherName = document.querySelector('.current-title');
 const currentIconContainer = document.querySelector('.current-icon-container');
@@ -18,6 +20,25 @@ const tenDayContainer = document.querySelector('.ten-day-container');
 const searchBtn = document.querySelector('.search-city-button');
 const searchValue = document.querySelector('.search-city');
 const errorcontainer = document.querySelector('.errors');
+
+function setWeatherIcon(currentWeather) {
+  switch (currentWeather) {
+    case 'Clouds':
+      return Cloudy;
+    case 'Mist':
+      return Cloudy;
+    case 'Rain':
+      return Rainy;
+    case 'Clear':
+      return Sunny;
+    case 'Snow':
+      return Snowy;
+    case 'Thunderstorm':
+      return Thunder;
+    default:
+      return null;
+  }
+}
 
 function getDay(timestamp) {
   const date = new Date(timestamp * 1000);
@@ -41,72 +62,59 @@ async function getWeatherData(city = 'New York') {
   };
 }
 
-// function convertToFahrenheit(temp) {
-//   return Math.round((temp * 9) / 5 - 459.67);
-// }
-
 function clearForcast() {
   tenDayContainer.innerHTML = '';
 }
 
-function tenDayForcast(futureWeatherData) {
+async function tenDayForcast(futureWeatherData) {
   clearForcast();
-  const data = futureWeatherData.daily;
+  const data = await futureWeatherData.daily;
   for (let i = 0; i < data.length; i += 1) {
     const day = getDay(data[i].dt);
     const temp = Math.round(data[i].temp.day);
-    const { description } = data[i].weather[0];
+    const { main } = data[i].weather[0];
     tenDayContainer.innerHTML += `
     <div class="ten-day-item">
       <p class="ten-day-title">${day}</p>
       <div class="ten-day-icon-container">
-        <p class="ten-day-icon" alt="weather icon">${description}</p>
+        <img src=${setWeatherIcon(main)} />
       </div>
       <p class="ten-day-temp">${temp}°F</p>
     </div>
     `;
+    // const tenDayIconContainer = document.querySelector('.ten-day-icon-container');
+    // tenDayIconContainer.appendChild(setWeatherIcon(main, 'ten-day-icon'));
   }
   return tenDayContainer;
 }
 
-function setWeatherIcon(currentWeather) {
-  const img = document.createElement('img');
-  img.classList = 'img-icon';
+function renderBackground() {
+  const body = document.querySelector('body');
+  const currentTime = new Date().getHours();
+  console.log(currentTime);
+  const currentWeatherAmPm = currentTime > 12 ? 'PM' : 'AM';
 
-  switch (currentWeather) {
-    case 'Clouds':
-      img.src = Cloudy;
-      break;
-    case 'Rain':
-      img.src = Rainy;
-      break;
-    case 'Clear':
-      img.src = Sunny;
-      break;
-    case 'Snow':
-      img.src = Snowy;
-      break;
-    case 'Thunderstorm':
-      img.src = Thunder;
-      break;
-    default:
-      return null;
+  if (currentWeatherAmPm === 'AM') {
+    body.style.backgroundImage = `url(${nightTimeBackground})`;
+  } else {
+    body.style.backgroundImage = `url(${dayTimeBackground})`;
   }
-  return img;
+  return body;
 }
 
 function renderWeather(data) {
   const currentWeather = data.currentWeatherJson;
   const futureWeather = data.futureWeatherJson;
   currentWeatherName.innerHTML = currentWeather.name;
-  currentIconContainer.innerHTML = '';
-  currentIconContainer.appendChild(setWeatherIcon(currentWeather.weather[0].main));
+  // console.log(currentWeather.weather[0].main);
+  currentIconContainer.innerHTML = `<img class='current-day-icon' src=${setWeatherIcon(currentWeather.weather[0].main)} />`;
   currentWeatherTemp.innerHTML = `${Math.round(currentWeather.main.temp)}°F`;
   windValue.innerHTML = `${Math.round(currentWeather.wind.speed)} mph`;
   humidityValue.innerHTML = `${currentWeather.main.humidity}%`;
   pressureValue.innerHTML = `${Math.round(currentWeather.main.pressure)} mb`;
   feelsLikeValue.innerHTML = `${Math.round(currentWeather.main.feels_like)}°F`;
   tenDayForcast(futureWeather);
+  renderBackground();
 }
 
 window.addEventListener('load', () => {

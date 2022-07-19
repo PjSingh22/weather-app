@@ -7,14 +7,14 @@
 body {
   width: 100vw;
   height: 100vh;
-  background: linear-gradient(to right, #fdf497, pink);;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
+  background-size: cover;
 }
 
-.img-icon {
+.current-day-icon {
   height: 100px;
   width: 100px;
 }
@@ -37,12 +37,15 @@ body {
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
+  opacity: 0.8;
 }
 
 .upper-half {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  /* grid-gap: 20px; */
+  display: flex;
+  flex-direction: column;
+  /* display: grid;
+  grid-template-columns: 1fr 0.5fr; */
+  grid-gap: 20px;
 }
 
 .search-city-container {
@@ -62,14 +65,15 @@ body {
 }
 
 .search-city-button {
-  background-color: #fdf497;
-  border: none;
+  background-color: lightskyblue;
+  border: 1px solid black;
   border-radius: 5px;
   padding: 10px;
   cursor: pointer;
   font-size: 1.2rem;
   font-weight: bold;
   color: #000;
+
 }
 
 .weather-container {
@@ -78,8 +82,8 @@ body {
   justify-content: space-evenly;
   align-items: center;
   gap: 10px;
-  width: 50vw;
-  height: 60vh;
+  width: 60vw;
+  height: 70vh;
   padding: 10px;
   /* border: 1px solid black; */
   background-color: black;
@@ -90,7 +94,7 @@ body {
 
 /* current weather styles */
 .current-title {
-  font-size: 2rem;
+  font-size: 4rem;
   font-weight: bold;
 }
 
@@ -102,6 +106,7 @@ body {
 /* other info styles */
 
 .other-info-container {
+  width: 80vw;
   display: grid;
   grid-template-columns: 1fr 1fr;
   margin: 0 auto;
@@ -109,6 +114,7 @@ body {
 
 .other-info-item {
   padding: 5px;
+  height: 100px;
 }
 
 /* 10 day forcast styles */
@@ -118,7 +124,7 @@ body {
   flex-direction: row;
   gap: 10px;
   width: 100%;
-  overflow: scroll;
+  overflow-x: scroll;
 }
 
 .ten-day-item {
@@ -135,6 +141,15 @@ body {
 
   /* desktop view */
 
+  @media(min-width: 1920px) {
+    .other-info-container {
+      gap: 20px;
+    }
+    .other-info-item {
+      font-size: 1.5rem;
+    }
+  }
+
   @media (min-width: 768px) {
     .other-info-container {
       font-size: 1.4em;
@@ -142,6 +157,16 @@ body {
 
     .search-city-container {
       flex-direction: row;
+    }
+
+    .current-title {
+      font-size: 2rem;
+    }
+  }
+
+  @media (min-width: 792px) {
+    .current-title {
+      font-size: 4rem;
     }
   }
 
@@ -174,5 +199,11 @@ body {
 
     .ten-day-item {
       padding: 10px;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .current-title {
+      font-size: 2rem;
     }
   }
